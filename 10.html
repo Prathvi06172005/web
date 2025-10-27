@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTf-8">
+        <title>AJAX and JSON examples</title>
+        <style>
+            body {
+                font-family:arial,sanf-serif;
+                margin:20px;
+            }
+            button{
+                margin:5px 0;
+                padding:8px 12px;
+
+            }
+            
+        </style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    </head>
+    <body>
+        <h2>AJAX without query</h2>
+        <button onclick="loadContent()">Load textContent (NO jQuery)</button>
+        <div id="content" class="content">Content from the file will load here</div>
+        <h2>Ajax with jQuery</h2>
+        <button id="loadBtn">load Text content(jQuery)</button>
+        <div id="jqueryContent" class="content">content from the file will load here</div>
+        <h2>getJSON()Method</h2>
+        <button id="loadJSONBtn">Load JSON data(jQuerY)</button>
+        <div id="jsonContent" class="jsonContent">JSON data will load here</div>
+        <h2>ParseJson()Method</h2>
+        <button id="ParseJsonBtn">parse JSON data(jQuery)</button>
+        <div id="ParseContent" class="jsonContent">parsed JSON data will apper here</div>
+        <script>
+            function loadContent(){
+                const xhr=new XMLHttpRequest();
+                xhr.open("GET","sample.txt",true);
+                xhr.onload=function(){
+                    if(xhr.status===200)
+                    {
+                        document.getElementById("content").innerText=xhr.responseText;
+                    }
+                }
+                xhr.send();
+                    }
+                    $('#loadBtn').click (function()
+                    {
+                        $.ajax({
+                            url:'sample.txt',
+                            method:'GET',
+                            success:function(data)
+                            {
+                                $('#jqueryContent').text(data);
+                            }
+                        });
+                    });
+                    $('#loadJSONBtn').click (function(){
+                        $.getJSON('data.json',function(data){
+                            $('#jsonContent').html(
+                                `<p>Name:${data.name}</p>
+                                <p>Age:${data.age}</p>
+                                <p>Country:${data.country}</p>`
+                                );
+                        });
+                    });
+                    $('#ParseJsonBtn').click(function(){
+                        const jsonString='{"name":"Alice","age":25,"country":"USA"}';
+                        const jsonObject=$.parseJSON(jsonString);
+                        $('#ParseContent').html(
+                            `<p> Name:${jsonObject.name}</p>
+                            <p>Age:${jsonObject.age}</p>
+                                <p>Country:${jsonObject.country}</p>`
+                            );
+                        
+                    });
+        
+          
+        </script>
+        
+    </body>
+</html>
